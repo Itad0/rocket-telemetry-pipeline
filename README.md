@@ -5,7 +5,8 @@
 ```markdown
 # Secure Rocket Telemetry Pipeline
 
-A comprehensive, production-ready telemetry system for model rockets featuring Hardware-in-the-Loop (HIL) simulation, fault injection, real-time monitoring, and security controls.
+A comprehensive, production-ready telemetry system for model rockets featuring
+Hardware-in-the-Loop (HIL) simulation, fault injection, real-time monitoring, and security controls.
 
 ## Features
 
