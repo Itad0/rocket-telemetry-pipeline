@@ -1,6 +1,6 @@
 ## Documentation
 
-### 21. Main README (`docs/README.md`)
+### Main README (`docs/README.md`)
 
 ```markdown
 # Secure Rocket Telemetry Pipeline
