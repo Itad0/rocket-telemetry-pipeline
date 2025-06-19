@@ -10,31 +10,31 @@ Hardware-in-the-Loop (HIL) simulation, fault injection, real-time monitoring, an
 
 ## Features
 
-### 🚀 **Core Telemetry**
+###  **Core Telemetry**
 - Real-time sensor data collection (BME688 pressure, MPU6050 IMU)
 - Secure MQTT transmission with TLS encryption
 - Flight phase detection and state management
 - Hardware abstraction supporting Raspberry Pi Pico W/Zero 2 W
 
-### 🔧 **HIL Simulation**
+###  **HIL Simulation**
 - Realistic flight physics engine with atmospheric modeling
 - Motor thrust curves and parachute deployment simulation
 - Configurable rocket parameters and environmental conditions
 - Real-time vs accelerated time simulation modes
 
-### ⚠️ **Fault Injection**
+###  **Fault Injection**
 - Comprehensive fault types: sensor spikes, dropouts, communication loss
 - Scheduled and on-demand fault injection
 - Remote control via REST API and MQTT
 - Fault event logging and analysis
 
-### 📊 **Monitoring & Observability**
+###  **Monitoring & Observability**
 - Grafana dashboards for real-time visualization
 - Prometheus metrics collection and alerting
 - Loki log aggregation across all components
 - System health monitoring and anomaly detection
 
-### 🔒 **Security**
+###  **Security**
 - TLS encryption for all communications
 - Certificate-based MQTT authentication
 - API authentication with role-based access
