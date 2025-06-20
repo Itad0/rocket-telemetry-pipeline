@@ -119,8 +119,9 @@ python -m pytest tests/ -v
 ./scripts/testing/run-integration-tests.sh
 ```
 
-### Troubleshooting
-# Common Issues
+# Troubleshooting
+
+### Common Issues
 
 Docker permission denied: sudo usermod -aG docker $USER
 Certificate errors: Regenerate with ./scripts/security/generate-certificates.sh
