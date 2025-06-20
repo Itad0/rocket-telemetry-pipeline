@@ -30,3 +30,15 @@ sudo apt install -y git curl wget python3 python3-pip python3-venv \
 # Add user to docker group
 sudo usermod -aG docker $USER
 # Log out and back in for group changes
+
+### 2. System Preparation 
+
+# Clone repository
+git clone https://github.com/your-org/rocket-telemetry-pipeline.git
+cd rocket-telemetry-pipeline
+
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# Run environment setup
+./scripts/setup/setup-development.sh
