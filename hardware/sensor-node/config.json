@@ -1,0 +1,46 @@
+{
+  "wifi": {
+    "ssid": "YourWiFiNetwork",
+    "password": "YourWiFiPassword",
+    "timeout": 10
+  },
+  "mqtt": {
+    "broker": "192.168.1.100",
+    "port": 8883,
+    "use_tls": false,
+    "username": "rocket_node",
+    "password": "secure_password",
+    "topic_prefix": "rocket/telemetry",
+    "keepalive": 60,
+    "reconnect_delay": 5
+  },
+  "sensors": {
+    "sample_rate": 10,
+    "altitude_offset": 0.0,
+    "enable_simulation": false,
+    "calibration": {
+      "pressure_samples": 10,
+      "accel_bias": [0.0, 0.0, 0.0],
+      "gyro_bias": [0.0, 0.0, 0.0]
+    }
+  },
+  "flight": {
+    "launch_accel_threshold": 2.0,
+    "apogee_velocity_threshold": 1.0,
+    "landing_accel_threshold": 0.5,
+    "max_altitude": 1000.0
+  },
+  "system": {
+    "status_led_pin": 15,
+    "battery_adc_pin": 26,
+    "i2c_sda_pin": 4,
+    "i2c_scl_pin": 5,
+    "i2c_frequency": 400000,
+    "watchdog_timeout": 30
+  },
+  "debug": {
+    "enable_serial": true,
+    "log_level": "INFO",
+    "enable_heartbeat": true
+  }
+}
