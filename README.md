@@ -10,31 +10,31 @@ Hardware-in-the-Loop (HIL) simulation, fault injection, real-time monitoring, an
 
 ## Features
 
-###  **Core Telemetry**
+###  Core Telemetry
 - Real-time sensor data collection (BME688 pressure, MPU6050 IMU)
 - Secure MQTT transmission with TLS encryption
 - Flight phase detection and state management
 - Hardware abstraction supporting Raspberry Pi Pico W/Zero 2 W
 
-###  **HIL Simulation**
+###  HIL Simulation
 - Realistic flight physics engine with atmospheric modeling
 - Motor thrust curves and parachute deployment simulation
 - Configurable rocket parameters and environmental conditions
 - Real-time vs accelerated time simulation modes
 
-###  **Fault Injection**
+###  Fault Injection
 - Comprehensive fault types: sensor spikes, dropouts, communication loss
 - Scheduled and on-demand fault injection
 - Remote control via REST API and MQTT
 - Fault event logging and analysis
 
-###  **Monitoring & Observability**
+###  Monitoring & Observability
 - Grafana dashboards for real-time visualization
 - Prometheus metrics collection and alerting
 - Loki log aggregation across all components
 - System health monitoring and anomaly detection
 
-###  **Security**
+###  Security
 - TLS encryption for all communications
 - Certificate-based MQTT authentication
 - API authentication with role-based access
@@ -42,7 +42,7 @@ Hardware-in-the-Loop (HIL) simulation, fault injection, real-time monitoring, an
 
 ## Quick Start
 
-1. **Environment Setup**
+1. Environment Setup
 ```bash
 git clone <repository-url>
 cd rocket-telemetry-pipeline
@@ -50,17 +50,17 @@ chmod +x scripts/*.sh
 ./scripts/setup_environment.sh
 ```
 
-2. **Generate Certificates**
+2. Generate Certificates
 ```bash
 ./scripts/generate_certs.sh
 ```
 
-3. **Deploy Infrastructure**
+3. Deploy Infrastructure
 ```bash
 ./scripts/deploy.sh
 ```
 
-4. **Start Telemetry Nodes**
+4. Start Telemetry Nodes
 ```bash
 # Terminal 1 - HIL Simulator
 cd hil_simulation
@@ -78,9 +78,9 @@ source venv/bin/activate
 python fault_injector.py
 ```
 
-5. **Access Dashboards**
-- **Grafana**: https://localhost:3000 (admin/admin)
-- **Prometheus**: http://localhost:9090
+5. Access Dashboards
+- Grafana: https://localhost:3000 (admin/admin)
+- Prometheus: http://localhost:9090
 - **Ground Station API**: https://localhost:5000
 
 ## Architecture
@@ -115,29 +115,29 @@ python fault_injector.py
 
 ### Data Flow
 
-1. **Collection**: Sensor node or HIL simulator generates telemetry
-2. **Transmission**: Data sent via secure MQTT to ground station
-3. **Processing**: Ground station processes, stores, and analyzes data
-4. **Monitoring**: Prometheus scrapes metrics, Loki collects logs
-5. **Visualization**: Grafana displays real-time dashboards
-6. **Control**: API endpoints allow remote system control
+1. Collection: Sensor node or HIL simulator generates telemetry
+2. Transmission: Data sent via secure MQTT to ground station
+3. Processing: Ground station processes, stores, and analyzes data
+4. Monitoring: Prometheus scrapes metrics, Loki collects logs
+5. Visualization: Grafana displays real-time dashboards
+6. Control: API endpoints allow remote system control
 
 ## Hardware Setup
 
 ### Rocket Sensor Node
-- **Microcontroller**: Raspberry Pi Pico W or Pi Zero 2 W
-- **Sensors**: 
+- Microcontroller: Raspberry Pi Pico W or Pi Zero 2 W
+- Sensors: 
   - BME688 (pressure, temperature, humidity, gas)
   - MPU6050 (6-axis IMU: accelerometer + gyroscope)
-- **Optional**: PiCam, status LED, GPS module
-- **Power**: LiPo battery (3.7V) with voltage regulator
-- **Communication**: Wi-Fi (onboard) or LoRa module
+- Optional: PiCam, status LED, GPS module
+- Power: LiPo battery (3.7V) with voltage regulator
+- Communication: Wi-Fi (onboard) or LoRa module
 
 ### Ground Station
-- **Computer**: Raspberry Pi 4/5 or laptop with Docker
-- **Network**: Wi-Fi or Ethernet for MQTT broker
-- **Storage**: 32GB+ MicroSD card or SSD for data logging
-- **Display**: Monitor for real-time dashboard viewing
+- Computer: Raspberry Pi 4/5 or laptop with Docker
+- Network: Wi-Fi or Ethernet for MQTT broker
+- Storage: 32GB+ MicroSD card or SSD for data logging
+- Display: Monitor for real-time dashboard viewing
 
 ### Wiring Diagram
 ```
@@ -213,7 +213,7 @@ GET  /metrics                   # Prometheus metrics
 
 ### Example API Usage
 
-**Set Simulation Mode**
+Set Simulation Mode
 ```bash
 curl -X POST https://localhost:5000/mode \
   -H "Content-Type: application/json" \
@@ -221,7 +221,7 @@ curl -X POST https://localhost:5000/mode \
   -d '{"mode": "sim"}'
 ```
 
-**Inject Sensor Fault**
+Inject Sensor Fault
 ```bash
 curl -X POST https://localhost:5000/fault \
   -H "Content-Type: application/json" \
@@ -260,12 +260,12 @@ curl -X POST https://localhost:5000/fault \
 
 ### Common Issues
 
-**MQTT Connection Failed**
+MQTT Connection Failed
 - Check certificate paths and permissions
 - Verify MQTT broker is running: `docker-compose ps`
 - Test connectivity: `mosquitto_pub -h localhost -p 8883 -t test -m hello`
 
-**Sensor Initialization Error**
+**Sensor Initialization Error
 - Ensure I2C is enabled on Raspberry Pi
 - Check wiring connections and power supply
 - Verify sensor addresses with `i2cdetect -y 1`
@@ -275,7 +275,7 @@ curl -X POST https://localhost:5000/fault \
 - Verify Prometheus is scraping metrics
 - Review logs: `docker logs rocket-grafana`
 
-**API Authentication Issues**
+**API Authentication Issues
 - Check username/password configuration
 - Verify TLS certificates are valid
 - Review API server logs for details
