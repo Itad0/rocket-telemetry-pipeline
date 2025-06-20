@@ -1,0 +1,143 @@
+version: '3.8'
+
+services:
+  # MQTT Broker with TLS
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: rocket-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto/passwd:/mosquitto/config/passwd
+      - ./mosquitto/certs:/mosquitto/certs
+      - ./mosquitto/acl.conf:/mosquitto/config/acl.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_logs:/mosquitto/log
+    environment:
+      - MOSQUITTO_USERNAME=admin
+      - MOSQUITTO_PASSWORD=secure_mqtt_password
+    networks:
+      - rocket-net
+    healthcheck:
+      test: ["CMD", "mosquitto_pub", "-h", "localhost", "-t", "health", "-m", "test"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prometheus monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: rocket-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules:/etc/prometheus/rules
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    networks:
+      - rocket-net
+    depends_on:
+      - node-exporter
+
+  # System metrics exporter
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: rocket-node-exporter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - rocket-net
+
+  # Grafana dashboards
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: rocket-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ../dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_DOMAIN=localhost
+      - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+    networks:
+      - rocket-net
+    depends_on:
+      - prometheus
+
+  # Loki log aggregation
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: rocket-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - rocket-net
+
+  # InfluxDB for time-series data
+  influxdb:
+    image: influxdb:2.7
+    container_name: rocket-influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+      - influxdb_config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=rocket_telemetry_2024
+      - DOCKER_INFLUXDB_INIT_ORG=rocket_org
+      - DOCKER_INFLUXDB_INIT_BUCKET=telemetry
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=rocket-super-secret-auth-token
+    networks:
+      - rocket-net
+
+volumes:
+  mosquitto_data:
+  mosquitto_logs:
+  prometheus_data:
+  loki_data:
+  grafana_data:
+  influxdb_data:
+  influxdb_config:
+
+networks:
+  rocket-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
