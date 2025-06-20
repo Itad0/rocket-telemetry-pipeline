@@ -1,0 +1,28 @@
+# Development environment configuration
+environment: development
+
+mqtt:
+  broker: localhost
+  port: 1883
+  use_tls: false
+  username: dev_user
+  password: dev_password
+
+api:
+  host: 0.0.0.0
+  port: 5000
+  debug: true
+  use_ssl: false
+
+database:
+  path: /tmp/dev_telemetry.db
+  backup_interval: 3600
+
+telemetry:
+  sample_rate: 10
+  enable_simulation: true
+  enable_fault_injection: true
+
+logging:
+  level: DEBUG
+  file: /tmp/rocket_telemetry.log
