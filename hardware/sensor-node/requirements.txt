@@ -1,0 +1,16 @@
+# MicroPython libraries for Raspberry Pi Pico W
+# Install via Thonny Package Manager or manually
+
+# MQTT client
+micropython-umqtt.simple
+
+# JSON handling (built-in)
+# Network (built-in)
+# Machine (built-in)
+
+# Additional libraries (copy .mpy files to device)
+# adafruit-circuitpython-bme680
+# adafruit-circuitpython-mpu6050
+
+# Note: MicroPython uses different package management
+# Use Thonny IDE to install packages or copy .mpy files
