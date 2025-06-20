@@ -1,0 +1,31 @@
+# Production environment configuration
+environment: production
+
+mqtt:
+  broker: ${MQTT_BROKER}
+  port: 8883
+  use_tls: true
+  username: ${MQTT_USERNAME}
+  password: ${MQTT_PASSWORD}
+  ca_cert: /etc/ssl/certs/ca.crt
+
+api:
+  host: 0.0.0.0
+  port: 5000
+  debug: false
+  use_ssl: true
+  ssl_cert: /etc/ssl/certs/server.crt
+  ssl_key: /etc/ssl/private/server.key
+
+database:
+  path: /var/lib/rocket_telemetry.db
+  backup_interval: 1800
+
+telemetry:
+  sample_rate: 50
+  enable_simulation: false
+  enable_fault_injection: false
+
+logging:
+  level: INFO
+  file: /var/log/rocket_telemetry.log
