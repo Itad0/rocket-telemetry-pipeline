@@ -101,3 +101,35 @@ EOF
 # Set up log rotation
 echo "Configuring log rotation..."
 sudo tee /
+sudo tee /etc/logrotate.d/rocket-telemetry > /dev/null <<EOF
+/var/log/rocket_*.log {
+   daily
+   missingok
+   rotate 30
+   compress
+   delaycompress
+   notifempty
+   sharedscripts
+   postrotate
+       systemctl reload rocket-telemetry || true
+   endscript
+}
+EOF
+
+# Create SSL directory and set permissions
+sudo mkdir -p /etc/ssl/{certs,private}
+sudo chown -R $USER:$USER /etc/ssl/{certs,private}
+
+# Create data directories
+sudo mkdir -p /var/lib/rocket-telemetry
+sudo mkdir -p /var/log/rocket-telemetry
+sudo chown -R $USER:$USER /var/lib/rocket-telemetry /var/log/rocket-telemetry
+
+echo "Environment setup complete!"
+echo ""
+echo "Next steps:"
+echo "1. Run ./scripts/security/generate-certificates.sh to create TLS certificates"
+echo "2. Run docker-compose up -d in the infrastructure directory"
+echo "3. Start individual telemetry nodes as needed"
+echo ""
+echo "Note: You may need to log out and back in for Docker group changes to take effect"
